@@ -32,7 +32,6 @@ public class MagicRender extends EntityRenderer<EntityMagic> {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         stack.pushPose();
-        stack.translate(entity.position().x, entity.position().y, entity.position().z);
         stack.mulPose(Vector3f.YP.rotationDegrees(entity.getXRot() - 90.0F));
         stack.mulPose(Vector3f.ZP.rotationDegrees(entity.getYRot()));
 
@@ -42,12 +41,14 @@ public class MagicRender extends EntityRenderer<EntityMagic> {
 
         int gradation = 30;
         VertexConsumer vc = buffer.getBuffer(TestRenderType.trinagleStrip());
-        for (int i = 0; i < gradation; ++i) {
+        /*for (int i = 0; i < gradation; ++i) {
             stack.mulPose(Vector3f.XP.rotationDegrees(360.0F / gradation));
-            vc.vertex(d, r1, 0).color(1F, 1F, 1F, 1F);
-            vc.vertex(d, r1 - w1, 0).color(1F, 1F, 1F, 1F);
-        }
-        vc.endVertex();
+            vc.vertex(d, r1, 0).color(1F, 1F, 1F, 1F).endVertex();
+            vc.vertex(d, r1 - w1, 0).color(1F, 1F, 1F, 1F).endVertex();
+        }*/
+        vc.vertex(0, 0, 0).color(1F, 1F, 1F, 1F).endVertex();
+        vc.vertex(1, 0, 0).color(1F, 1F, 1F, 1F).endVertex();
+        vc.vertex(0, 1, 0).color(1F, 1F, 1F, 1F).endVertex();
 
         stack.popPose();
     }
