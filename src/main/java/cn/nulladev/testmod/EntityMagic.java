@@ -29,10 +29,8 @@ public class EntityMagic extends EntityHasOwner {
         this.setPos(owner.position());
         this.calcRotation();
         if (this.level.isClientSide) {
-            //System.out.println("client tick, pos:" + this.position().toString());
             return;
         }
-        //System.out.println("server tick, pos:" + this.position().toString());
         if (owner instanceof Player player) {
             if (!player.isUsingItem()) {
                 this.kill();

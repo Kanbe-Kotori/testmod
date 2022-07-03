@@ -23,7 +23,6 @@ public class MagicRender extends EntityRenderer<EntityMagic> {
     @Override
     public void render(EntityMagic entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int p_114490_) {
         super.render(entity, entityYaw, partialTicks, stack, buffer, p_114490_);
-        System.out.println("render");
 
         if (entity == null)
             return;
