@@ -17,6 +17,22 @@ public class TestRenderType extends RenderType {
                 "spell_blend_notex",
                 DefaultVertexFormat.POSITION_COLOR,
                 VertexFormat.Mode.TRIANGLE_STRIP,
+                1024, true, true,
+                RenderType.CompositeState.builder()
+                        .setTextureState(NO_TEXTURE)
+                        .setShaderState(POSITION_COLOR_SHADER)
+                        .setDepthTestState(NO_DEPTH_TEST)
+                        .setCullState(NO_CULL)
+                        .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                        .createCompositeState(false)
+        );
+    }
+
+    public static RenderType quads() {
+        return RenderType.create(
+                "spell_blend_notex",
+                DefaultVertexFormat.POSITION_COLOR,
+                VertexFormat.Mode.QUADS,
                 256, true, true,
                 RenderType.CompositeState.builder()
                         .setTextureState(NO_TEXTURE)
@@ -33,7 +49,7 @@ public class TestRenderType extends RenderType {
                 "spell_blend_notex",
                 DefaultVertexFormat.POSITION_COLOR,
                 VertexFormat.Mode.LINE_STRIP,
-                256, true, true,
+                1024, true, true,
                 RenderType.CompositeState.builder()
                         .setLineState(new RenderStateShard.LineStateShard(OptionalDouble.of(width)))
                         .setTextureState(NO_TEXTURE)
