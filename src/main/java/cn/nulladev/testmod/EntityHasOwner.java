@@ -17,9 +17,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-public class EntityHasOwner extends Entity implements OwnableEntity {
+public abstract class EntityHasOwner extends Entity implements OwnableEntity {
 
-    private static final EntityDataAccessor<Optional<UUID>> OWNER_UNIQUE_ID = SynchedEntityData.defineId(EntityHasOwner.class, EntityDataSerializers.OPTIONAL_UUID);
+    protected static final EntityDataAccessor<Optional<UUID>> OWNER_UNIQUE_ID = SynchedEntityData.defineId(EntityHasOwner.class, EntityDataSerializers.OPTIONAL_UUID);
 
     public EntityHasOwner(EntityType<?> type, Level level) {
         super(type, level);

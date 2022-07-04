@@ -35,10 +35,10 @@ public class MagicRender extends EntityRenderer<EntityMagic> {
         Matrix4f m = stack.last().pose();
 
         float d = 2F;
-        float r1 = 2F;
+        float r1 = 2.2F;
         float r2 = 1.8F;
         float w1 = 0.04F;
-        float w2 = 0.04F;
+        float w2 = 0.02F;
 
         round2d(buffer, m, d, 0, 0, r1, w1, 120, 0x3FFFFFFF);
         round2d(buffer, m, d, 0, 0, r2, w1, 120, 0x3FFFFFFF);
@@ -71,7 +71,7 @@ public class MagicRender extends EntityRenderer<EntityMagic> {
         line2d(buffer,m,d,r12 * sin2pi_7[1], r12 * cos2pi_7[1],r12 * sin2pi_7[4], r12 * cos2pi_7[4],w1,0x7FFF7F00,0x7F00FFFF);
         line2d(buffer,m,d,r12 * sin2pi_7[4], r12 * cos2pi_7[4],r12 * sin2pi_7[0], r12 * cos2pi_7[0],w1,0x7F00FFFF,0x7FFF0000);
 
-        stack.mulPose(Vector3f.XP.rotationDegrees(-2*tickRot));
+        stack.mulPose(Vector3f.XP.rotationDegrees(-5*tickRot));
 
         float ri = r12 * Mth.cos(3 * Mth.PI / 7);
 

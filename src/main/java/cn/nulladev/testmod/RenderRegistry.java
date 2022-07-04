@@ -11,6 +11,7 @@ public class RenderRegistry {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers e) {
         e.registerEntityRenderer(Registry.MAGIC.get(), MagicRender::new);
+        e.registerEntityRenderer(Registry.MAGIC_BALL.get(), MagicBallRender::new);
     }
 
 }

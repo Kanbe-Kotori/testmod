@@ -4,10 +4,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Arrow;
-import net.minecraft.world.item.ArrowItem;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -48,9 +44,8 @@ public class EntityMagic extends EntityHasOwner {
             return;
         }
 
-        shootArrow();
-        shootArrow();
-        shootArrow();
+        shoot();
+        shoot();
 
     }
 
@@ -76,21 +71,24 @@ public class EntityMagic extends EntityHasOwner {
         return Mth.lerp(0.2F, p_37274_, p_37275_);
     }
 
-    protected void shootArrow() {
+    protected void shoot() {
         if (this.getOwner() instanceof Player player) {
             Vec3 xAxis = player.getLookAngle().normalize();
             Vec3 yAxis = new Vec3(-xAxis.y, xAxis.x, 0).normalize();
             Vec3 zAxis = xAxis.cross(yAxis).normalize();
             float theta = new Random().nextFloat() * 2 * Mth.PI;
+            float r = new Random().nextFloat() * 2 * Mth.cos(3 * Mth.PI / 7);
             Vec3 shootPos = this.getOwner().position()
                     .add(0, player.getEyeHeight(), 0)
                     .add(xAxis.scale(2))
-                    .add(yAxis.scale(Mth.sin(theta)))
-                    .add(zAxis.scale(Mth.cos(theta)));
-            AbstractArrow arrow = new Arrow(level, player);
-            arrow.setPos(shootPos);
-            arrow.shoot(xAxis.x,xAxis.y,xAxis.z,3,1);
-            level.addFreshEntity(arrow);
+                    .add(yAxis.scale(r * Mth.sin(theta)))
+                    .add(zAxis.scale(r * Mth.cos(theta)));
+            EntityMagicBall ball = new EntityMagicBall(Registry.MAGIC_BALL.get(), level);
+            ball.setOwner(player);
+            ball.setPos(shootPos);
+            float v = 1F + new Random().nextFloat() * 2;
+            ball.shoot(xAxis.x,xAxis.y,xAxis.z,v,1);
+            level.addFreshEntity(ball);
         }
     }
 

@@ -19,6 +19,8 @@ public class Registry {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, Testmod.MODID);
 
     public static final RegistryObject<EntityType<EntityMagic>> MAGIC = ENTITY_TYPES.register("magic", () -> EntityType.Builder.of(EntityMagic::new, MobCategory.MISC).sized(2F, 2F).fireImmune().build("magic"));
+    public static final RegistryObject<EntityType<EntityMagicBall>> MAGIC_BALL = ENTITY_TYPES.register("magic_ball", () -> EntityType.Builder.of(EntityMagicBall::new, MobCategory.MISC).sized(0.2F, 0.2F).fireImmune().build("magic_ball"));
+
 
     public void registerEvents() {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
