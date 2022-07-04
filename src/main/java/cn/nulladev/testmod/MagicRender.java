@@ -1,14 +1,14 @@
 package cn.nulladev.testmod;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 public class MagicRender extends EntityRenderer<EntityMagic> {
     protected MagicRender(EntityRendererProvider.Context p_174008_) {
@@ -28,24 +28,72 @@ public class MagicRender extends EntityRenderer<EntityMagic> {
             return;
 
         stack.pushPose();
-        //stack.mulPose(Vector3f.YP.rotationDegrees(entity.getXRot() - 90.0F));
-        //stack.mulPose(Vector3f.ZP.rotationDegrees(entity.getYRot()));
+        stack.translate(0, entity.getOwner().getBbHeight() / 2, 0);
+        stack.mulPose(Vector3f.YP.rotationDegrees(entity.getXRot() - 90.0F));
+        stack.mulPose(Vector3f.ZP.rotationDegrees(entity.getYRot()));
 
-        double d = 0.5D;
-        double r1 = 2D;
-        double w1 = 0.05D;
+        Matrix4f m = stack.last().pose();
 
-        int gradation = 30;
+        float d = 0.5F;
+        float r1 = 2F;
+        float w1 = 0.05F;
+
+        int gradation = 120;
+        float ang = (entity.tickCount % 200) / 200F * 360.0F;
+        stack.mulPose(Vector3f.XP.rotationDegrees(ang));
         VertexConsumer vc = buffer.getBuffer(TestRenderType.trinagleStrip());
-        vc.vertex(0, 0, 1).color(1F, 1F, 1F, 1F).endVertex();
-        vc.vertex(1, 0, 0).color(1F, 1F, 1F, 1F).endVertex();
-        vc.vertex(0, 1, 0).color(1F, 1F, 1F, 1F).endVertex();
-        /*for (int i = 0; i < gradation; ++i) {
+        for (int i = 0; i <= gradation; ++i) {
             stack.mulPose(Vector3f.XP.rotationDegrees(360.0F / gradation));
-            vc.vertex(d, r1, 0).color(1F, 1F, 1F, 1F).endVertex();
-            vc.vertex(d, r1 - w1, 0).color(1F, 1F, 1F, 1F).endVertex();
-        }*/
+            int color = getColor((double)i / gradation);
+            vc.vertex(m, d, r1, 0).color(color).endVertex();
+            vc.vertex(m, d, r1 - w1, 0).color(color).endVertex();
+        }
+
+        stack.mulPose(Vector3f.XP.rotationDegrees(-2*ang));
+        VertexConsumer vc1 = buffer.getBuffer(TestRenderType.lineStrip(8D));
+        vc1.vertex(m, d, 2, 0).color(0xFFFFFFFF).endVertex();
+        vc1.vertex(m, d, 0, 2).color(0xFFFFFFFF).endVertex();
+        vc1.vertex(m, d, -2, 0).color(0xFFFFFFFF).endVertex();
+        vc1.vertex(m, d, 0, -2).color(0xFFFFFFFF).endVertex();
+        vc1.vertex(m, d, 2, 0).color(0xFFFFFFFF).endVertex();
+
+        VertexConsumer vc2 = buffer.getBuffer(TestRenderType.lineStrip(8D));
+        float sqrt2 = Mth.sqrt(2);
+        vc2.vertex(m, d, sqrt2, sqrt2).color(0xFFFFFFFF).endVertex();
+        vc2.vertex(m, d, sqrt2, -sqrt2).color(0xFFFFFFFF).endVertex();
+        vc2.vertex(m, d, -sqrt2, -sqrt2).color(0xFFFFFFFF).endVertex();
+        vc2.vertex(m, d, -sqrt2, sqrt2).color(0xFFFFFFFF).endVertex();
+        vc2.vertex(m, d, sqrt2, sqrt2).color(0xFFFFFFFF).endVertex();
 
         stack.popPose();
+    }
+
+    public static int getColor(double angle) {
+        int a = 0xFF;
+        int r = 0, g = 0, b = 0;
+        double p = (angle * 6) % 1;
+        double mp = 1 - p;
+        if (angle < 1D/6) {
+            r = 0xFF;
+            g = (int) (0xFF * p);
+        } else if (angle < 2D/6) {
+            r = (int) (0xFF * mp);
+            g = 0xFF;
+        } else if (angle < 3D/6) {
+            g = 0xFF;
+            b = (int) (0xFF * p);
+        } else if (angle < 4D/6) {
+            g = (int) (0xFF * mp);
+            b = 0xFF;
+        } else if (angle < 5D/6) {
+            r = (int) (0xFF * p);
+            b = 0xFF;
+        } else if (angle < 1D) {
+            r = 0xFF;
+            b = (int) (0xFF * mp);
+        } else {
+            r = 0xFF;
+        }
+        return a << 24 | r << 16 | g << 8 | b;
     }
 }
